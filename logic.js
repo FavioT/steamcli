@@ -331,6 +331,7 @@ const createUsrInterface = (params) => {
  * @function    [getUI]
  * @returns     {Json}
  * @summary     Get Steam user data from GET requests.
+ * @ToDo: Refactor this on separate files
  */
 const getUI = () => {
 
