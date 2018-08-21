@@ -70,6 +70,16 @@ const createUsrInterface = (params) => {
         '';
     }
 
+    let bottomRightContent = [
+        ['Id', 'Name', 'Username', 'Email']
+    ];
+
+    for (let item in params.mockup) {
+        let arr = new Array(params.mockup[item].id.toString(), params.mockup[item].name, params.mockup[item].username, params.mockup[item].email);
+
+        bottomRightContent.push(arr);
+    }
+
     let topleft = blessed.box({
         parent: screen,
         label: ' User info ',
@@ -150,7 +160,7 @@ const createUsrInterface = (params) => {
             fg: 'default',
             bg: 'default',
             border: {
-              fg: 'red',
+              fg: 'default',
               bg: 'default'
             },
             selected: {
@@ -177,7 +187,7 @@ const createUsrInterface = (params) => {
 
     let bottomright = blessed.listtable({
         parent: screen,
-        label: ' Other data ',
+        label: ' Mock data ',
         left: '50%-1',
         top: '50%-1',
         width: '49%+1',
@@ -207,19 +217,13 @@ const createUsrInterface = (params) => {
                 }
             }
         },
-        data: [
-            ['Animals', 'Foods', 'Times', 'Numbers'],
-            ['Elephant', 'Apple', '1:00am', 'One'],
-            ['Bird', 'Orange', '2:15pm', 'Two'],
-            ['T-Rex', 'Taco', '8:45am', 'Three'],
-            ['Mouse', 'Cheese', '9:05am', 'Four']
-        ]
+        data: bottomRightContent
     });
 
     var bar = blessed.listbar({
           //parent: screen,
           bottom: 0,          
-          left: 3,
+          left: 0,
           right: 3,
           height: auto ? 'shrink' : 3,
           mouse: true,
@@ -391,6 +395,15 @@ const getUI = () => {
                 
                 return callback(null, dataObj.players);
             });
+        },
+        mockup: function (callback) {
+            let url = 'https://jsonplaceholder.typicode.com/users';
+
+            request( url, function (error, response, body) {
+                let dataObj = JSON.parse(body);
+
+                return callback(null, dataObj)
+            })
         }
     }, function (err, results) {
             createUsrInterface(results);
